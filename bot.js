@@ -9,8 +9,11 @@ bot.setWebHook(`${URL}/bot${process.env.BOT_TOKEN}`);
 bot.setMyCommands([
   { command: 'start', description: '🚀 Запустить бота' },
   { command: 'profile', description: '👤 Показать профиль' },
-  { command: 'phrase', description: '🔮 Фраза дня' }
+  { command: 'phrase', description: '🧘 Фраза дня' },
+  { command: 'onecard', description: '🃏 Случайная карта Таро' },
+  { command: 'threecards', description: '🔮 3 карты Таро (расклад)' }
 ]);
+
 
 
 

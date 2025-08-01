@@ -4,6 +4,7 @@ const callbackHandler = require("../handlers/callbackHandler");
 const profileHandler = require("../handlers/profileHandler");
 const phraseHandler = require("../handlers/phraseHandler");
 const Subscriber = require("../models/Subscriber");
+const tarotHandler = require("../handlers/tarotHandler");
 
 function registerRoutes(app, bot) {
   app.use(express.json());
@@ -39,6 +40,8 @@ function registerRoutes(app, bot) {
           await profileHandler(bot, update.message);
         } else if (text === "/phrase") {
           await phraseHandler(bot, update.message);
+        } else if (["/onecard", "/threecards"].includes(text)) {
+          await tarotHandler(bot, update.message);
         }
       } else if (update.callback_query) {
         await callbackHandler(bot, update.callback_query);
