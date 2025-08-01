@@ -34,10 +34,11 @@ const enToRuZodiac = {
 // Функция смещения (по кругу)
 function getRotatedSign(currentSign, offset) {
   const currentIndex = zodiacSigns.indexOf(currentSign);
-  const rotatedIndex =
-    (currentIndex + offset + zodiacSigns.length) % zodiacSigns.length;
+  if (currentIndex === -1) return undefined; // знак не найден
+  const rotatedIndex = ((currentIndex + offset) % zodiacSigns.length + zodiacSigns.length) % zodiacSigns.length;
   return zodiacSigns[rotatedIndex];
 }
+
 
 function getPhraseForSign(sign) {
   const signRu = enToRuZodiac[sign.toLowerCase()];
