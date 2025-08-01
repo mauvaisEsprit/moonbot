@@ -2,6 +2,7 @@ const express = require("express");
 const startHandler = require("../handlers/startHandler");
 const callbackHandler = require("../handlers/callbackHandler");
 const profileHandler = require("../handlers/profileHandler");
+const phraseHandler = require("../handlers/phraseHandler");
 const Subscriber = require("../models/Subscriber");
 
 function registerRoutes(app, bot) {
