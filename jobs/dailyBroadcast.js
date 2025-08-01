@@ -6,7 +6,7 @@ const { getPhraseForSign } = require('../utils/getRotatedPhrase');
 
 function startDailyBroadcast() {
   cron.schedule(
-    '* * * * *', // каждый день в 09:00 по Парижскому времени
+    '0 8 * * *', // каждый день в 08:00 по московскому времени
     async () => {
       console.log('Запуск ежедневной рассылки...');
       try {
@@ -29,7 +29,7 @@ function startDailyBroadcast() {
       }
     },
     {
-      timezone: 'Europe/Paris',
+      timezone: 'Europe/Moscow',
     }
   );
 }
