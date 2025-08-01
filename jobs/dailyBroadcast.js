@@ -15,7 +15,7 @@ function startDailyBroadcast() {
         for (const sub of subscribers) {
           if (!sub.zodiacSign) continue;
 
-          const advice = getAdviceForZodiac(sub.zodiacSign);
+          const advice = getPhraseForSign(sub.zodiacSign);
           const zodiacName = getZodiacName(sub.zodiacSign);
           const rotatedPhrase = getPhraseForSign(sub.zodiacSign);
 

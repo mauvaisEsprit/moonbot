@@ -18,7 +18,7 @@ function getPhraseForSign(sign) {
   const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000); // 1 Jan = 1
   const phraseIndex = dayOfYear % 31;
 
-  const rotatedSign = getRotatedSign(sign, -1); // смещение по кругу
+  const rotatedSign = getRotatedSign(sign, -dayOfYear); // ← исправлено
   const phrasesForRotatedSign = phrases[rotatedSign];
 
   if (!phrasesForRotatedSign || phrasesForRotatedSign.length < 31) {
@@ -27,6 +27,7 @@ function getPhraseForSign(sign) {
 
   return phrasesForRotatedSign[phraseIndex];
 }
+
 
 module.exports = { getPhraseForSign };
 // utils/getRotatedPhrase.js
