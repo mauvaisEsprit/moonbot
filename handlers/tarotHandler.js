@@ -10,7 +10,7 @@ function getRandomCards(n = 1) {
 
 async function sendCard(bot, chatId, card, position = null) {
   const caption = `${position ? `💫 *${position}*\n` : ''}🃏 *${card.name}*\n\n${card.description}`;
-  const imagePath = path.join(__dirname, `../images/${card.id}.png`);
+  const imagePath = path.join(__dirname, `../images/${card.filename}.png`);
 
   await bot.sendPhoto(chatId, imagePath, {
     caption,
