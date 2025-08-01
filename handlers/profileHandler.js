@@ -1,4 +1,5 @@
 const Subscriber = require('../models/Subscriber');
+const { getZodiacName } = require('../utils/zodiacUtils');
 
 module.exports = async (bot, message) => {
   const chatId = message.chat.id;
@@ -8,10 +9,12 @@ module.exports = async (bot, message) => {
     return bot.sendMessage(chatId, '❌ Вы не подписаны. Напишите /start чтобы начать.');
   }
 
+  const zodiacName = user.zodiacSign ? getZodiacName(user.zodiacSign) : 'не выбран';
+
   const text = `
 👤 Ваш профиль:
 Имя: ${user.firstName || 'не указано'}
-Знак зодиака: ${user.zodiacSign || 'не выбран'}
+Знак зодиака: ${zodiacName}
 Подписка: ${user.subscribed ? 'активна' : 'отписан'}
   `.trim();
 
