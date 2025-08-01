@@ -1,19 +1,3 @@
-// Массив советов по каждому знаку
-const zodiacAdvices = {
-  aries: 'Сегодня лучше не спешить — Вселенная подскажет верное направление.',
-  taurus: 'Сосредоточься на внутреннем равновесии и не бери на себя лишнего.',
-  gemini: 'Будь гибким в общении — это откроет тебе новые возможности.',
-  cancer: 'День хорош для заботы о себе и своих близких.',
-  leo: 'Прояви лидерство, но помни про сочувствие.',
-  virgo: 'Наведи порядок в мыслях — ясность даст тебе энергию.',
-  libra: 'Ищи баланс между делами и отдыхом.',
-  scorpio: 'Интуиция — твой главный помощник сегодня.',
-  sagittarius: 'Расширяй горизонты, даже если это маленький шаг.',
-  capricorn: 'Планируй, но не забывай быть гибким.',
-  aquarius: 'Будь открытым к неожиданным идеям.',
-  pisces: 'Следуй за чувствами, но не теряй фокус.'
-};
-
 // Сопоставление с русскими названиями
 const zodiacNames = {
   aries: 'Овен',
@@ -30,14 +14,12 @@ const zodiacNames = {
   pisces: 'Рыбы'
 };
 
-// Получить совет по знаку
-function getAdviceForZodiac(sign) {
-  return zodiacAdvices[sign.toLowerCase()] || 'Сегодня хороший день, чтобы быть собой.';
-}
+
 
 // Получить русское имя знака
-function getZodiacName(sign) {
-  return zodiacNames[sign.toLowerCase()] || 'Знак не определён';
+function getZodiacName(signEn) {
+  return zodiacNames[signEn.toLowerCase()] || 'Знак не определён';
 }
 
-module.exports = { getAdviceForZodiac, getZodiacName };
+module.exports = { getZodiacName };
+// utils/zodiacUtils.js

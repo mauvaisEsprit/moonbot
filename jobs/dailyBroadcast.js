@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const subscriberService = require('../services/subscriberService');
-const { getAdviceForZodiac, getZodiacName } = require('../utils/zodiacUtils');
+const { getZodiacName } = require('../utils/zodiacUtils');
 const bot = require('../bot');
 const { getPhraseForSign } = require('../utils/getRotatedPhrase');
 
@@ -15,11 +15,10 @@ function startDailyBroadcast() {
         for (const sub of subscribers) {
           if (!sub.zodiacSign) continue;
 
-          const advice = getPhraseForSign(sub.zodiacSign);
           const zodiacName = getZodiacName(sub.zodiacSign);
-          const rotatedPhrase = getPhraseForSign(sub.zodiacSign);
+          const phrase = getPhraseForSign(sub.zodiacSign);
 
-          const message = `🌙 Лунный совет для знака *${zodiacName}*:\n\n${advice}\n\n🔮 Астро-настроение:\n${rotatedPhrase}`;
+          const message = `🌙 Лунный совет для знака *${zodiacName}*:\n\n${phrase}`;
 
           await bot.sendMessage(sub.chatId, message, { parse_mode: 'Markdown' });
         }

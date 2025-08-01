@@ -1,31 +1,41 @@
-const phrases = require('../data/phrases.json');
+const phrases = require("../data/phrases.json");
 
 const zodiacSigns = [
-  'Овен', 'Телец', 'Близнецы', 'Рак',
-  'Лев', 'Дева', 'Весы', 'Скорпион',
-  'Стрелец', 'Козерог', 'Водолей', 'Рыбы'
+  "Овен",
+  "Телец",
+  "Близнецы",
+  "Рак",
+  "Лев",
+  "Дева",
+  "Весы",
+  "Скорпион",
+  "Стрелец",
+  "Козерог",
+  "Водолей",
+  "Рыбы",
 ];
 
 // Перевод с английского на русский
 const enToRuZodiac = {
-  aries: 'Овен',
-  taurus: 'Телец',
-  gemini: 'Близнецы',
-  cancer: 'Рак',
-  leo: 'Лев',
-  virgo: 'Дева',
-  libra: 'Весы',
-  scorpio: 'Скорпион',
-  sagittarius: 'Стрелец',
-  capricorn: 'Козерог',
-  aquarius: 'Водолей',
-  pisces: 'Рыбы'
+  aries: "Овен",
+  taurus: "Телец",
+  gemini: "Близнецы",
+  cancer: "Рак",
+  leo: "Лев",
+  virgo: "Дева",
+  libra: "Весы",
+  scorpio: "Скорпион",
+  sagittarius: "Стрелец",
+  capricorn: "Козерог",
+  aquarius: "Водолей",
+  pisces: "Рыбы",
 };
 
 // Функция смещения (по кругу)
 function getRotatedSign(currentSign, offset) {
   const currentIndex = zodiacSigns.indexOf(currentSign);
-  const rotatedIndex = (currentIndex + offset + zodiacSigns.length) % zodiacSigns.length;
+  const rotatedIndex =
+    (currentIndex + offset + zodiacSigns.length) % zodiacSigns.length;
   return zodiacSigns[rotatedIndex];
 }
 
@@ -34,10 +44,18 @@ function getPhraseForSign(sign) {
   if (!signRu) return `Неизвестный знак зодиака: ${sign}`;
 
   const date = new Date();
-  const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
+  const dayOfYear = Math.floor(
+    (date - new Date(date.getFullYear(), 0, 0)) / 86400000
+  );
   const phraseIndex = dayOfYear % 31;
 
   const rotatedSign = getRotatedSign(signRu, -dayOfYear);
+
+  console.log("signRu:", signRu);
+  console.log("dayOfYear:", dayOfYear);
+  console.log("rotatedSign:", rotatedSign);
+  console.log("phrasesForRotatedSign:", phrases[rotatedSign]);
+
   const phrasesForRotatedSign = phrases[rotatedSign];
 
   if (!phrasesForRotatedSign || phrasesForRotatedSign.length < 31) {
