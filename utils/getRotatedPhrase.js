@@ -6,7 +6,23 @@ const zodiacSigns = [
   'Стрелец', 'Козерог', 'Водолей', 'Рыбы'
 ];
 
-// Функция смещения (например, -1 означает "вчерашний" знак)
+// Перевод с английского на русский
+const enToRuZodiac = {
+  aries: 'Овен',
+  taurus: 'Телец',
+  gemini: 'Близнецы',
+  cancer: 'Рак',
+  leo: 'Лев',
+  virgo: 'Дева',
+  libra: 'Весы',
+  scorpio: 'Скорпион',
+  sagittarius: 'Стрелец',
+  capricorn: 'Козерог',
+  aquarius: 'Водолей',
+  pisces: 'Рыбы'
+};
+
+// Функция смещения (по кругу)
 function getRotatedSign(currentSign, offset) {
   const currentIndex = zodiacSigns.indexOf(currentSign);
   const rotatedIndex = (currentIndex + offset + zodiacSigns.length) % zodiacSigns.length;
@@ -14,11 +30,14 @@ function getRotatedSign(currentSign, offset) {
 }
 
 function getPhraseForSign(sign) {
+  const signRu = enToRuZodiac[sign.toLowerCase()];
+  if (!signRu) return `Неизвестный знак зодиака: ${sign}`;
+
   const date = new Date();
-  const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000); // 1 Jan = 1
+  const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 86400000);
   const phraseIndex = dayOfYear % 31;
 
-  const rotatedSign = getRotatedSign(sign, -dayOfYear); // ← исправлено
+  const rotatedSign = getRotatedSign(signRu, -dayOfYear);
   const phrasesForRotatedSign = phrases[rotatedSign];
 
   if (!phrasesForRotatedSign || phrasesForRotatedSign.length < 31) {
@@ -28,6 +47,4 @@ function getPhraseForSign(sign) {
   return phrasesForRotatedSign[phraseIndex];
 }
 
-
 module.exports = { getPhraseForSign };
-// utils/getRotatedPhrase.js
