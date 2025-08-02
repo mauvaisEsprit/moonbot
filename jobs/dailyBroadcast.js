@@ -9,7 +9,7 @@ const {
 
 function startDailyBroadcast() {
   cron.schedule(
-    '0 8 * * *',
+    '21 19 * * *',
     async () => {
       console.log('Запуск ежедневной рассылки...');
       try {
