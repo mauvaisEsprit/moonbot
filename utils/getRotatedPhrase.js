@@ -52,10 +52,6 @@ function getPhraseForSign(sign) {
 
   const rotatedSign = getRotatedSign(signRu, -dayOfYear);
 
-  console.log("signRu:", signRu);
-  console.log("dayOfYear:", dayOfYear);
-  console.log("rotatedSign:", rotatedSign);
-  console.log("phrasesForRotatedSign:", phrases[rotatedSign]);
 
   const phrasesForRotatedSign = phrases[rotatedSign];
 

@@ -4,6 +4,7 @@ const connectDB = require('./config/db');
 const bot = require('./bot');
 const { registerRoutes } = require('./routes/registerRoutes');
 const { startDailyBroadcast } = require('./jobs/dailyBroadcast');
+const startHourlyStatsJob = require('./cron/hourly'); 
 
 const app = express();
 
@@ -19,7 +20,8 @@ app.get('/ping', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
-  console.log('Бот запущен и слушает обновления...1');
+  console.log('Бот запущен и слушает обновления...');
 });
 
 startDailyBroadcast();
+startHourlyStatsJob();
