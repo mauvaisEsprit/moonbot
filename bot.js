@@ -12,7 +12,7 @@ bot.setMyCommands([
   { command: 'phrase', description: '🧘 Фраза дня' },
   { command: 'onecard', description: '🃏 Случайная карта Таро' },
   { command: 'threecards', description: '🔮 3 карты Таро (расклад)' },
-  { command: 'profile', description: '👤 Показать профиль' },
+  { command: 'profile', description: '👤 Показать профиль' }
 ]);
 
 
