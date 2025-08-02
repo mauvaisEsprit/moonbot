@@ -8,7 +8,7 @@ bot.setWebHook(`${URL}/bot${process.env.BOT_TOKEN}`);
 
 bot.setMyCommands([
   { command: 'start', description: '🚀 Запустить бота' },
-  { command: 'retro', description: '♒ Инфо про Ретроградный Меркурий' },
+  { command: 'retro', description: '♒ Ретрограды' },
   { command: 'phrase', description: '🧘 Фраза дня' },
   { command: 'onecard', description: '🃏 Случайная карта Таро' },
   { command: 'threecards', description: '🔮 3 карты Таро (расклад)' },
