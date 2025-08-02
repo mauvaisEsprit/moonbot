@@ -20,7 +20,7 @@ function startDailyBroadcast() {
 
           const zodiacName = getZodiacName(sub.zodiacSign);
           const phrase = getPhraseForSign(sub.zodiacSign, zodiacPhrases);
-
+          console.log(`Отправка фразы для ${zodiacName} (${sub.chatId}): ${phrase}`);
           const message = `🌙 Лунный совет для знака *${zodiacName}*:\n\n${phrase}`;
 
           await bot.sendMessage(sub.chatId, message, { parse_mode: 'Markdown' });
