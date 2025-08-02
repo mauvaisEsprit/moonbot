@@ -1,6 +1,6 @@
+const Subscriber = require('../models/Subscriber');
 const { getPhraseForSign, phrases } = require('../utils/getRotatedPhrase');
 const { getZodiacName } = require('../utils/zodiacUtils');
-const Subscriber = require('../models/Subscriber');
 
 module.exports = async (bot, message) => {
   const chatId = message.chat.id;
