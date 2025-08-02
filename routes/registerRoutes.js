@@ -5,7 +5,7 @@ const profileHandler = require("../handlers/profileHandler");
 const phraseHandler = require("../handlers/phraseHandler");
 const Subscriber = require("../models/Subscriber");
 const tarotHandler = require("../handlers/tarotHandler");
-const retroMercuryHandler = require("../handlers/retroMercuryHandler");
+const retroCommandHandler = require('../handlers/retroCommandHandler');
 
 function registerRoutes(app, bot) {
   app.use(express.json());
@@ -44,7 +44,7 @@ function registerRoutes(app, bot) {
         } else if (["/onecard", "/threecards"].includes(text)) {
           await tarotHandler(bot, update.message);
         } else if (text === "/retro") {
-          await retroMercuryHandler(bot, update.message);
+          await retroCommandHandler(bot, update.message);
         }
       } else if (update.callback_query) {
         await callbackHandler(bot, update.callback_query);

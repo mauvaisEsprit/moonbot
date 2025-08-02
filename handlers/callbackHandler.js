@@ -1,5 +1,7 @@
 const Subscriber = require('../models/Subscriber');
 const { getZodiacName } = require('../utils/zodiacUtils');
+const retroPlanetHandler = require('./retroPlanetHandler');
+
 
 const ruToEnZodiac = {
   'Овен': 'aries',
@@ -19,6 +21,11 @@ const ruToEnZodiac = {
 module.exports = async (bot, callbackQuery) => {
   const chatId = callbackQuery.message.chat.id;
   const data = callbackQuery.data;
+
+  if (data.startsWith('retro_')) {
+  return await retroPlanetHandler(bot, callbackQuery);
+}
+
 
   if (data.startsWith('zodiac_')) {
     // Пользователь выбрал знак зодиака
