@@ -9,6 +9,7 @@ const subscriberSchema = new mongoose.Schema({
   firstName: String,
   zodiacSign: { type: String, default: null },
   subscribed: { type: Boolean, default: true },
+  subscribedAt: { type: Date, default: Date.now },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Subscriber', subscriberSchema);

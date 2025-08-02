@@ -3,18 +3,35 @@
 const Subscriber = require("../models/Subscriber");
 
 async function subscribe(chatId) {
-  const exists = await Subscriber.findOne({ chatId });
-  if (exists) return "Вы уже подписаны!";
+  const user = await Subscriber.findOne({ chatId });
 
-  const newSubscriber = new Subscriber({ chatId });
+  if (user) {
+    if (user.subscribed) {
+      return "Вы уже подписаны!";
+    } else {
+      user.subscribed = true;
+      user.subscribedAt = new Date();
+      await user.save();
+      return "Вы успешно подписались!";
+    }
+  }
+
+  // Если нет пользователя — создаём нового
+  const newSubscriber = new Subscriber({ chatId, subscribed: true, subscribedAt: new Date() });
   await newSubscriber.save();
   return "Вы успешно подписались!";
 }
 
 async function unsubscribe(chatId) {
-  const deleted = await Subscriber.findOneAndDelete({ chatId });
-  if (deleted) return "Вы отписались.";
-  return "Вы не были подписаны.";
+  const user = await Subscriber.findOne({ chatId });
+
+  if (!user || !user.subscribed) {
+    return "Вы не были подписаны.";
+  }
+
+  user.subscribed = false;
+  await user.save();
+  return "Вы отписались.";
 }
 
 async function setZodiacSign(chatId, zodiacSign) {
