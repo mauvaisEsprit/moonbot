@@ -20,7 +20,7 @@ module.exports = async (bot, message) => {
   const zodiacRu = getZodiacName(user.zodiacSign);
   const phrase = getPhraseForSign(user.zodiacSign, phrases); // ← передаём нужный источник
 
-  const text = `🔮 Фраза дня для знака *${zodiacRu}*:\n\n${phrase}`;
+  const text = `🔮 Фраза дня для знака Вас:\n\n${phrase}`;
 
   await bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
 };
