@@ -2,7 +2,7 @@ const cron = require('node-cron');
 const subscriberService = require('../services/subscriberService');
 const { getZodiacName } = require('../utils/zodiacUtils');
 const bot = require('../bot');
-const { getPhraseForSign } = require('../utils/getRotatedPhrase');
+const { getLongPhraseForSign } = require('../utils/getRotatedPhrase');
 
 function startDailyBroadcast() {
   cron.schedule(
@@ -16,7 +16,7 @@ function startDailyBroadcast() {
           if (!sub.zodiacSign) continue;
 
           const zodiacName = getZodiacName(sub.zodiacSign);
-          const phrase = getPhraseForSign(sub.zodiacSign);
+          const phrase = getLongPhraseForSign(sub.zodiacSign);
 
           const message = `🌙 Лунный совет для знака *${zodiacName}*:\n\n${phrase}`;
 

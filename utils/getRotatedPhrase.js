@@ -64,4 +64,25 @@ function getPhraseForSign(sign) {
   return phrasesForRotatedSign[phraseIndex];
 }
 
-module.exports = { getPhraseForSign };
+function getLongPhraseForSign(sign) {
+  const signRu = enToRuZodiac[sign.toLowerCase()];
+  if (!signRu) return `Неизвестный знак зодиака: ${sign}`;
+
+  const date = new Date();
+  const dayOfYear = Math.floor(
+    (date - new Date(date.getFullYear(), 0, 0)) / 86400000
+  );
+  const phraseIndex = dayOfYear % 31;
+
+  const rotatedSign = getRotatedSign(signRu, -dayOfYear);
+
+  const phrasesForRotatedSign = zodiacPhrases[rotatedSign];
+
+  if (!phrasesForRotatedSign || phrasesForRotatedSign.length < 31) {
+    return `Нет гороскопа для знака ${rotatedSign} на сегодня.`;
+  }
+
+  return phrasesForRotatedSign[phraseIndex];
+}
+
+module.exports = { getPhraseForSign, getLongPhraseForSign };
