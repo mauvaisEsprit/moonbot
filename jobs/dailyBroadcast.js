@@ -6,7 +6,7 @@ const { getLongPhraseForSign } = require('../utils/getRotatedPhrase');
 
 function startDailyBroadcast() {
   cron.schedule(
-    '0 8 * * *', // каждый день в 08:00 по московскому времени
+    '*/2 * * * *', // каждый день в 08:00 по московскому времени
     async () => {
       console.log('Запуск ежедневной рассылки...');
       try {
@@ -21,12 +21,15 @@ function startDailyBroadcast() {
           const phrase = getLongPhraseForSign(sub.zodiacSign);
 
           const message = `🌙 Лунный совет для знака *${zodiacName}*:\n\n${phrase}`;
-
+          try {
           await bot.sendMessage(sub.chatId, message, { parse_mode: 'Markdown' });
           count++;
+          console.log(`Рассылка завершена. Отправлено сообщений: ${count}`);
+          } catch (error) {
+            console.error(`Ошибка при отправке сообщения пользователю ${sub.chatId}:`, error);
+          }
         }
 
-        console.log(`Рассылка завершена. Отправлено сообщений: ${count}`);
       } catch (error) {
         console.error('Ошибка в рассылке:', error);
       }
