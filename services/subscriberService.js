@@ -1,9 +1,7 @@
-// services/subscriberService.js
-
 const Subscriber = require("../models/Subscriber");
 const notifySubscriptionChange = require('../jobs/notifySubs');
 
-async function subscribe(chatId) {
+async function subscribe(chatId, firstName = "Utilisateur") {
   const user = await Subscriber.findOne({ chatId });
 
   if (user) {
@@ -19,9 +17,9 @@ async function subscribe(chatId) {
   }
 
   // Если нет пользователя — создаём нового
-  const newSubscriber = new Subscriber({ chatId, subscribed: true, subscribedAt: new Date() });
+  const newSubscriber = new Subscriber({ chatId, firstName, subscribed: true, subscribedAt: new Date() });
   await newSubscriber.save();
-  await notifySubscriptionChange(user);
+  await notifySubscriptionChange(newSubscriber); // <- исправлено
   return "Вы успешно подписались!";
 }
 
@@ -52,12 +50,10 @@ async function getAllSubscribers(filter = {}) {
   return Subscriber.find(filter);
 }
 
-
 async function isSubscribed(chatId) {
   const user = await Subscriber.findOne({ chatId });
-  return !!user;
+  return !!user?.subscribed;
 }
-
 
 module.exports = {
   subscribe,
