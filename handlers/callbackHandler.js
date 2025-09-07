@@ -1,6 +1,7 @@
 const Subscriber = require('../models/Subscriber');
 const { getZodiacName } = require('../utils/zodiacUtils');
 const retroPlanetHandler = require('./retroPlanetHandler');
+const notifySubscriptionChange = require('../jobs/notifySubs');
 
 
 const ruToEnZodiac = {
@@ -75,15 +76,31 @@ module.exports = async (bot, callbackQuery) => {
   }
 
   if (data === 'subscribe') {
-    await Subscriber.findOneAndUpdate({ chatId: chatId.toString() }, { subscribed: true });
-    await bot.answerCallbackQuery(callbackQuery.id, { text: 'Вы подписались' });
-    return sendProfile(bot, chatId);
-  }
+  const user = await Subscriber.findOneAndUpdate(
+    { chatId: chatId.toString() },
+    { subscribed: true, subscribedAt: new Date() },
+    { new: true }
+  );
+  
+  // 🔔 уведомление админу
+  await notifySubscriptionChange(user);
 
-  if (data === 'unsubscribe') {
-    await Subscriber.findOneAndUpdate({ chatId: chatId.toString() }, { subscribed: false });
-    await bot.answerCallbackQuery(callbackQuery.id, { text: 'Вы отписались' });
-    return sendProfile(bot, chatId);
+  await bot.answerCallbackQuery(callbackQuery.id, { text: 'Вы подписались' });
+  return sendProfile(bot, chatId);
+}
+
+if (data === 'unsubscribe') {
+  const user = await Subscriber.findOneAndUpdate(
+    { chatId: chatId.toString() },
+    { subscribed: false },
+    { new: true }
+  );
+
+  // 🔔 уведомление админу
+  await notifySubscriptionChange(user);
+
+  await bot.answerCallbackQuery(callbackQuery.id, { text: 'Вы отписались' });
+  return sendProfile(bot, chatId);
   }
 };
 
@@ -97,7 +114,7 @@ async function sendProfile(bot, chatId) {
   const zodiacRu = getZodiacName(user.zodiacSign);
 
   const text = `
-👤 Ваш профиль:\n\n
+👤 Ваш профиль:\n
 💬 Имя: ${user.firstName || 'не указано'}
 ♉ Знак зодиака: ${zodiacRu || 'не выбран'}
 📅 Подписка: ${user.subscribed ? 'активна' : 'отписан'}
