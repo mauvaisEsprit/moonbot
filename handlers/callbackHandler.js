@@ -97,9 +97,9 @@ async function sendProfile(bot, chatId) {
   const zodiacRu = getZodiacName(user.zodiacSign);
 
   const text = `
-👤 Профиль:
-💬 Имя: ${user.firstName || 'не указано'}
-♉ Знак зодиака: ${zodiacRu || 'не выбран'}
+👤 Ваш профиль:\n\n
+💬 Имя: ${user.firstName || 'не указано'}\n
+♉ Знак зодиака: ${zodiacRu || 'не выбран'}\n
 📅 Подписка: ${user.subscribed ? 'активна' : 'отписан'}
   `.trim();
 

@@ -12,9 +12,9 @@ module.exports = async (bot, message) => {
   const zodiacName = user.zodiacSign ? getZodiacName(user.zodiacSign) : 'не выбран';
 
   const text = `
-👤 Ваш профиль:
-💬 Имя: ${user.firstName || 'не указано'}
-♉ Знак зодиака: ${zodiacName}
+👤 Ваш профиль:\n\n
+💬 Имя: ${user.firstName || 'не указано'}\n
+♉ Знак зодиака: ${zodiacName}\n
 📅 Подписка: ${user.subscribed ? 'активна' : 'отписан'}
   `.trim();
 
