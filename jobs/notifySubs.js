@@ -9,7 +9,7 @@ async function notifySubscriptionChange(subscriber) {
   if (!subscriber || typeof subscriber.subscribed !== 'boolean') return;
 
   const YOUR_TELEGRAM_ID = process.env.TELEGRAM_ID;
-  const status = subscriber.subscribed ? '✅ Nouveau abonné' : '❌ Utilisateur désabonné';
+  const status = subscriber.subscribed ? '✅ Новый пользователь' : '❌ Пользователь отписался';
 
   const dateFR = subscriber.subscribedAt
     ? subscriber.subscribedAt.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
@@ -18,11 +18,11 @@ async function notifySubscriptionChange(subscriber) {
   try {
     await bot.sendMessage(
       YOUR_TELEGRAM_ID,
-      `${status}!\n💬 Nom: ${subscriber.firstName || 'Non spécifié'}\n🆔 Chat ID: ${subscriber.chatId}\n📅 Date: ${dateFR}`
+      `${status}!\n💬 Имя: ${subscriber.firstName || 'Нет данных'}\n🆔 Chat ID: ${subscriber.chatId}\n📅 Дата: ${dateFR}`
     );
-    console.log(`Notification envoyée: ${status} pour ${subscriber.chatId}`);
+    console.log(`Уведомление отправлено: ${status} ${subscriber.chatId}`);
   } catch (err) {
-    console.error('Erreur lors de l’envoi de la notification:', err);
+    console.error('Ошибка при отправке уведомления:', err);
   }
 }
 

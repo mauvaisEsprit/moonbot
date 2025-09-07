@@ -19,7 +19,7 @@ module.exports = async (bot, message) => {
       user = new Subscriber({ chatId, firstName, subscribed: true, subscribedAt: new Date() });
       await user.save();
       console.log(`Новый пользователь: ${firstName} (${chatId})`);
-      console.log('Test1', user);
+      console.log('Test1');
       await notifySubscriptionChange(user);
     } else if (!user.subscribed) {
       // Был отписан → подписываем снова
@@ -27,7 +27,7 @@ module.exports = async (bot, message) => {
       user.subscribedAt = new Date();
       await user.save();
       console.log(`Пользователь ${firstName} (${chatId}) восстановил подписку`);
-      console.log('Test2', user);
+      console.log('Test2');
       await notifySubscriptionChange(user);
     }
 
