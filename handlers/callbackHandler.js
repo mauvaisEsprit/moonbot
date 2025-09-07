@@ -83,7 +83,7 @@ module.exports = async (bot, callbackQuery) => {
   );
   
   // 🔔 уведомление админу
-  await notifySubscriptionChange(user);
+  await notifySubscriptionChange(user, false);
 
   await bot.answerCallbackQuery(callbackQuery.id, { text: 'Вы подписались' });
   return sendProfile(bot, chatId);
@@ -97,7 +97,7 @@ if (data === 'unsubscribe') {
   );
 
   // 🔔 уведомление админу
-  await notifySubscriptionChange(user);
+  await notifySubscriptionChange(user, false);
 
   await bot.answerCallbackQuery(callbackQuery.id, { text: 'Вы отписались' });
   return sendProfile(bot, chatId);
