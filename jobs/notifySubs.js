@@ -12,7 +12,7 @@ async function notifySubscriptionChange(subscriber) {
   const status = subscriber.subscribed ? '✅ Новый пользователь' : '❌ Пользователь отписался';
 
   const dateFR = subscriber.subscribedAt
-    ? subscriber.subscribedAt.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })
+    ? subscriber.subscribedAt.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Europe/Paris' })
     : '-';
 
   try {
