@@ -4,7 +4,7 @@ const connectDB = require('./config/db');
 const bot = require('./bot');
 const { registerRoutes } = require('./routes/registerRoutes');
 const { startDailyBroadcast } = require('./jobs/dailyBroadcast');
-const startHourlyStatsJob = require('./cron/hourly'); 
+const startDailyStats = require('./cron/daily');
 
 const app = express();
 
@@ -23,4 +23,4 @@ app.listen(PORT, () => {
 });
 
 startDailyBroadcast();
-startHourlyStatsJob();
+startDailyStats();
