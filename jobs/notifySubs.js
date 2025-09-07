@@ -1,15 +1,16 @@
 // components/subscriptionNotifier.js
 const bot = require('../bot');
 
-/**
- * Отправляет уведомление админу о смене статуса подписки
- * @param {Object} subscriber - { chatId, firstName, subscribed, subscribedAt }
- */
 async function notifySubscriptionChange(subscriber) {
-  if (!subscriber || typeof subscriber.subscribed !== 'boolean') return;
+  if (!subscriber || typeof subscriber.subscribed !== 'boolean') {
+    console.log("notifySubscriptionChange: некорректный объект subscriber");
+    return;
+  }
+
+  console.log("notifySubscriptionChange вызвана для", subscriber.chatId, "subscribed =", subscriber.subscribed);
 
   const YOUR_TELEGRAM_ID = process.env.TELEGRAM_ID;
-  const status = subscriber.subscribed ? '✅ Новый пользователь' : '❌ Пользователь отписался';
+  const status = subscriber.subscribed ? '✅ Новый подписчик' : '❌ Пользователь отписался';
 
   const dateFR = subscriber.subscribedAt
     ? subscriber.subscribedAt.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Europe/Paris' })

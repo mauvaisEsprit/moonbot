@@ -32,6 +32,7 @@ async function unsubscribe(chatId) {
 
   user.subscribed = false;
   await user.save();
+  console.log('Test3');
   await notifySubscriptionChange(user);
   return "Вы отписались.";
 }
