@@ -1,6 +1,6 @@
 // models/Subscriber.js
 const mongoose = require('mongoose');
-const { bot } = require('../bot');
+const bot  = require('../bot');
 
 const subscriberSchema = new mongoose.Schema({
   chatId: { type: String, required: true, unique: true },
