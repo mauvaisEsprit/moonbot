@@ -20,7 +20,8 @@ module.exports = async (bot, update, message) => {
       user = new Subscriber({ chatId, firstName, subscribed: true, subscribedAt: new Date() });
       await user.save();
       
-      await notifySubscriptionChange(user);
+
+      await notifySubscriptionChange(user, true);
       console.log(`Новый пользователь: ${firstName} (${chatId})`);
       
       
@@ -30,7 +31,7 @@ module.exports = async (bot, update, message) => {
       user.subscribedAt = new Date();
       await user.save();
 
-      await notifySubscriptionChange(user);
+      await notifySubscriptionChange(user, false);
       console.log(`Пользователь ${firstName} (${chatId}) восстановил подписку`);
       
       

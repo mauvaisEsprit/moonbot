@@ -5,8 +5,13 @@ const bot = require('../bot');
  * Отправляет уведомление админу о смене статуса подписки
  * @param {Object} subscriber - { chatId, firstName, subscribed, subscribedAt }
  */
-async function notifySubscriptionChange(subscriber) {
+async function notifySubscriptionChange(subscriber, statusSub) {
   if (!subscriber || typeof subscriber.subscribed !== 'boolean') return;
+
+  
+    let subscriptionStatus = statusSub ? 'В первый раз подписался' : 'Уже был подписан';
+
+  
 
   const YOUR_TELEGRAM_ID = process.env.TELEGRAM_ID;
   const status = subscriber.subscribed ? '✅ Новый подписчик' : '❌ Пользователь отписался';
@@ -21,7 +26,7 @@ async function notifySubscriptionChange(subscriber) {
   try {
     await bot.sendMessage(
       YOUR_TELEGRAM_ID,
-      status + '!\n💬 Имя: ' + name + '\n🆔 Chat ID: ' + subscriber.chatId + '\n📅 Дата: ' + dateFR
+      status + '!\n💬 Имя: ' + name + '\n🆔 Chat ID: ' + subscriber.chatId + '\n📅 Дата: ' + dateFR + '\n' + subscriptionStatus
     );
     console.log('Уведомление отправлено: ' + status + ' для ' + subscriber.chatId);
   } catch (err) {
