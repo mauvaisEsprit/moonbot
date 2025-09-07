@@ -1,4 +1,5 @@
 const Subscriber = require('../models/Subscriber');
+const notifySubscriptionChange = require('../jobs/notifySubs'); // <-- твоя функция уведомлений
 
 const zodiacSigns = [
   'Овен', 'Телец', 'Близнецы', 'Рак',
@@ -7,15 +8,30 @@ const zodiacSigns = [
 ];
 
 module.exports = async (bot, message) => {
-  const chatId = message.chat.id;
+  const chatId = message.chat.id.toString();
   const firstName = message.from.first_name || 'Пользователь';
 
-  let user = await Subscriber.findOne({ chatId: chatId.toString() });
+  // Ищем пользователя в базе
+  let user = await Subscriber.findOne({ chatId });
+
   if (!user) {
-    user = new Subscriber({ chatId: chatId.toString(), firstName });
+    // Создаём нового пользователя и сохраняем
+    user = new Subscriber({ chatId, firstName, subscribed: true, subscribedAt: new Date() });
     await user.save();
+
+    // 🔥 Уведомляем сразу о новой подписке
+    await notifySubscriptionChange(user);
+  } else if (!user.subscribed) {
+    // Пользователь был отписан, но нажал "подписаться"
+    user.subscribed = true;
+    user.subscribedAt = new Date();
+    await user.save();
+
+    // 🔥 Уведомляем о подписке
+    await notifySubscriptionChange(user);
   }
 
+  // Отправляем пользователю клавиатуру выбора знака зодиака
   const text = `Привет, ${firstName}! Выбери свой знак зодиака:`;
 
   const keyboard = [];

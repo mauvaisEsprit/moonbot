@@ -6,6 +6,7 @@ const { registerRoutes } = require('./routes/registerRoutes');
 const { startDailyBroadcast } = require('./jobs/dailyBroadcast');
 const startDailyStats = require('./cron/daily');
 
+
 const app = express();
 
 connectDB();
