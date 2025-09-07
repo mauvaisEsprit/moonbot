@@ -1,6 +1,7 @@
 // models/Subscriber.js
 const mongoose = require('mongoose');
 const bot  = require('../bot');
+require('dotenv').config();
 
 const subscriberSchema = new mongoose.Schema({
   chatId: { type: String, required: true, unique: true },
@@ -28,18 +29,19 @@ subscriberSchema.post('save', async function(doc) {
   console.log('--- POST SAVE HOOK ---');
   console.log('doc.isNew:', doc.isNew);
   console.log('doc.subscribed:', doc.subscribed);
+  const YOUR_TELEGRAM_ID = process.env.TELEGRAM_ID;
 
   try {
     if (doc.isNew) {
       console.log('Отправляем сообщение о новом пользователе');
-      await bot.sendMessage(process.env.TELEGRAM_ID,
+      await bot.sendMessage(YOUR_TELEGRAM_ID,
         `👤 Новый пользователь!\n💬 Имя: ${doc.firstName || 'Не указано'}\n🆔 Chat ID: ${doc.chatId}`
       );
       console.log('Сообщение о новом пользователе отправлено');
     } else if (this.isModified('subscribed')) {
       const status = doc.subscribed ? '✅ Новый подписчик' : '❌ Пользователь отписался';
       console.log('Отправляем сообщение о смене статуса:', status);
-      await bot.sendMessage(process.env.TELEGRAM_ID,
+      await bot.sendMessage(YOUR_TELEGRAM_ID,
         `${status}!\n💬 Имя: ${doc.firstName || 'Не указано'}\n🆔 Chat ID: ${doc.chatId}\n📅 Дата: ${doc.subscribedAt ? doc.subscribedAt.toLocaleString() : '-'}`
       );
       console.log('Сообщение о смене статуса отправлено');
@@ -59,6 +61,7 @@ subscriberSchema.post('findOneAndUpdate', async function(res) {
     return;
   }
   console.log('res.subscribed:', res.subscribed);
+  const YOUR_TELEGRAM_ID = process.env.TELEGRAM_ID;
 
   try {
     const modified = this.getUpdate();
@@ -71,7 +74,7 @@ subscriberSchema.post('findOneAndUpdate', async function(res) {
     if (modified.subscribed !== undefined) {
       const status = modified.subscribed ? '✅ Новый подписчик' : '❌ Пользователь отписался';
       console.log('Отправляем сообщение о смене статуса через findOneAndUpdate:', status);
-      await bot.sendMessage(process.env.TELEGRAM_ID,
+      await bot.sendMessage(YOUR_TELEGRAM_ID,
         `${status}!\n💬 Имя: ${res.firstName || 'Не указано'}\n🆔 Chat ID: ${res.chatId}\n📅 Дата: ${res.subscribedAt ? res.subscribedAt.toLocaleString() : '-'}`
       );
       console.log('Сообщение через findOneAndUpdate отправлено');

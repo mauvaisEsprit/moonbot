@@ -13,7 +13,7 @@ async function test() {
     // 2. Создаём нового пользователя
     console.log('Создаём нового пользователя...');
     const newUser = await Subscriber.create({
-      chatId: '1234567890', // можно любой тестовый chatId
+      chatId: '1234567891', // можно любой тестовый chatId
       firstName: 'Vlad',
     });
     console.log('Новый пользователь создан:', newUser.chatId);
