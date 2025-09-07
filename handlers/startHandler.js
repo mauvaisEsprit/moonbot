@@ -1,4 +1,5 @@
 const Subscriber = require('../models/Subscriber');
+const notifySubscriptionChange = require('../jobs/notifySubs');
 
 
 const zodiacSigns = [
@@ -7,7 +8,7 @@ const zodiacSigns = [
   'Стрелец', 'Козерог', 'Водолей', 'Рыбы'
 ];
 
-module.exports = async (bot, message) => {
+module.exports = async (bot, update, message) => {
   const chatId = message.chat.id.toString();
   const firstName = message.from.first_name || 'Пользователь';
 
@@ -18,6 +19,8 @@ module.exports = async (bot, message) => {
       // Новый пользователь → создаём и подписываем
       user = new Subscriber({ chatId, firstName, subscribed: true, subscribedAt: new Date() });
       await user.save();
+      
+      await notifySubscriptionChange(user);
       console.log(`Новый пользователь: ${firstName} (${chatId})`);
       
       
@@ -26,6 +29,8 @@ module.exports = async (bot, message) => {
       user.subscribed = true;
       user.subscribedAt = new Date();
       await user.save();
+
+      await notifySubscriptionChange(user);
       console.log(`Пользователь ${firstName} (${chatId}) восстановил подписку`);
       
       

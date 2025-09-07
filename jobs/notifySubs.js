@@ -1,4 +1,4 @@
-// components/subscriptionNotifier.js
+// jobs/notifySubs.js
 const bot = require('../bot');
 
 /**
@@ -12,18 +12,18 @@ async function notifySubscriptionChange(subscriber) {
   const status = subscriber.subscribed ? '✅ Новый подписчик' : '❌ Пользователь отписался';
 
   // Французская дата по Парижу
-  const dateFR = new Date().toLocaleString('fr-FR', {
-    timeZone: 'Europe/Paris',
-    dateStyle: 'short',
-    timeStyle: 'short'
-  });
+  const dateFR = subscriber.subscribedAt
+    ? subscriber.subscribedAt.toLocaleString('fr-FR', { timeZone: 'Europe/Paris', dateStyle: 'short', timeStyle: 'short' })
+    : '-';
+
+  const name = subscriber.firstName ? subscriber.firstName : 'Нет данных';
 
   try {
     await bot.sendMessage(
       YOUR_TELEGRAM_ID,
-      `${status}!\n💬 Имя: ${subscriber.firstName || 'Нет данных'}\n🆔 Chat ID: ${subscriber.chatId}\n📅 Дата: ${dateFR}`
+      status + '!\n💬 Имя: ' + name + '\n🆔 Chat ID: ' + subscriber.chatId + '\n📅 Дата: ' + dateFR
     );
-    console.log(`Уведомление отправлено: ${status} для ${subscriber.chatId}`);
+    console.log('Уведомление отправлено: ' + status + ' для ' + subscriber.chatId);
   } catch (err) {
     console.error('Ошибка при отправке уведомления:', err);
   }

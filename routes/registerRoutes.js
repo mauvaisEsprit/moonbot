@@ -36,7 +36,7 @@ function registerRoutes(app, bot) {
           const profileHandlerModule = require("../handlers/profileHandler");
           await profileHandlerModule(bot, update.message);
         } else if (text === "/start") {
-          await startHandler(bot, update.message);
+          await startHandler(bot, update, update.message);
         } else if (text === "/profile") {
           await profileHandler(bot, update.message);
         } else if (text === "/phrase") {

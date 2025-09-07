@@ -1,7 +1,5 @@
 // services/subscriberService.js
-
 const Subscriber = require("../models/Subscriber");
-const notifySubscriptionChange = require('../jobs/notifySubs');
 
 /**
  * Подписка пользователя
@@ -19,7 +17,7 @@ async function subscribe(chatId, firstName = "Utilisateur") {
       user.subscribedAt = new Date();
       await user.save();
 
-      await notifySubscriptionChange(user); // уведомление о подписке
+      
       return "Вы успешно подписались!";
     }
   }
@@ -33,7 +31,7 @@ async function subscribe(chatId, firstName = "Utilisateur") {
   });
   await user.save();
 
-  await notifySubscriptionChange(user); // уведомление о новой подписке
+  
   return "Вы успешно подписались!";
 }
 
@@ -51,7 +49,7 @@ async function unsubscribe(chatId) {
   user.subscribed = false;
   await user.save();
 
-  await notifySubscriptionChange(user); // уведомление об отписке
+  
   return "Вы отписались.";
 }
 
