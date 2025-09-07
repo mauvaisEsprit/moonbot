@@ -13,47 +13,27 @@ const subscriberSchema = new mongoose.Schema({
 /**
  * Уведомление о новом пользователе
  */
-subscriberSchema.post('save', async function (doc) {
-  if (doc.isNew) {
-    try {
-      const message = `👤 Новый пользователь!\n\n` +
-                      `💬 Имя: ${doc.firstName || 'Не указано'}\n` +
-                      `🆔 Chat ID: ${doc.chatId}\n` +
-                      `📅 Зарегистрирован: ${doc.createdAt.toLocaleString()}`;
-      await bot.telegram.sendMessage(process.env.TELEGRAM_ID, message);
-    } catch (err) {
-      console.error('Ошибка при уведомлении о новом пользователе:', err);
-    }
-  } else if (this.isModified && this.isModified('subscribed') && doc.subscribed === true) {
-    // Если при сохранении поменяли subscribed → true
-    try {
-      const message = `✅ Новый подписчик!\n\n` +
-                      `💬 Имя: ${doc.firstName || 'Не указано'}\n` +
-                      `🆔 Chat ID: ${doc.chatId}\n` +
-                      `📅 Подписан: ${doc.subscribedAt.toLocaleString()}`;
-      await bot.telegram.sendMessage(process.env.TELEGRAM_ID, message);
-    } catch (err) {
-      console.error('Ошибка при уведомлении о новой подписке:', err);
-    }
+subscriberSchema.pre('save', function(next) {
+  // Если меняется на подписку, ставим дату
+  if (this.isModified('subscribed') && this.subscribed === true) {
+    this.subscribedAt = new Date();
   }
+  next();
 });
 
-/**
- * Уведомление о подписке при findOneAndUpdate
- */
-subscriberSchema.post('findOneAndUpdate', async function (res) {
-  if (!res) return;
+subscriberSchema.post('save', async function(doc) {
   try {
-    // Проверяем что updatedDoc.subscribed стал true
-    if (res.subscribed === true) {
-      const message = `✅ Новый подписчик!\n\n` +
-                      `💬 Имя: ${res.firstName || 'Не указано'}\n` +
-                      `🆔 Chat ID: ${res.chatId}\n` +
-                      `📅 Подписан: ${res.subscribedAt.toLocaleString()}`;
-      await bot.telegram.sendMessage(process.env.TELEGRAM_ID, message);
+    if (doc.isNew) {
+      await bot.telegram.sendMessage(process.env.TELEGRAM_ID,
+        `👤 Новый пользователь!\n💬 Имя: ${doc.firstName || 'Не указано'}\n🆔 Chat ID: ${doc.chatId}`
+      );
+    } else if (this.isModified('subscribed')) {
+      const status = doc.subscribed ? '✅ Новый подписчик' : '❌ Пользователь отписался';
+      await bot.telegram.sendMessage(process.env.TELEGRAM_ID,
+        `${status}!\n💬 Имя: ${doc.firstName || 'Не указано'}\n🆔 Chat ID: ${doc.chatId}\n📅 Дата: ${doc.subscribedAt ? doc.subscribedAt.toLocaleString() : '-'}`);
     }
   } catch (err) {
-    console.error('Ошибка при уведомлении о новой подписке (findOneAndUpdate):', err);
+    console.error('Ошибка при уведомлении о подписке/отписке:', err);
   }
 });
 
