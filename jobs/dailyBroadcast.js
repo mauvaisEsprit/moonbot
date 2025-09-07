@@ -6,7 +6,7 @@ const { getLongPhraseForSign } = require('../utils/getRotatedPhrase');
 
 function startDailyBroadcast() {
   cron.schedule(
-    '0 8 * * *', // каждый день в 08:00 по московскому времени
+    '0 9 * * *', // каждый день в 08:00 по московскому времени
     async () => {
       console.log('Запуск ежедневной рассылки...');
       try {
