@@ -2,9 +2,7 @@
 const bot = require('../bot');
 
 /**
- * Просто вызываешь эту функцию с объектом пользователя,
- * и она шлёт уведомление о смене статуса подписки
- *
+ * Отправляет уведомление админу о смене статуса подписки
  * @param {Object} subscriber - { chatId, firstName, subscribed, subscribedAt }
  */
 async function notifySubscriptionChange(subscriber) {

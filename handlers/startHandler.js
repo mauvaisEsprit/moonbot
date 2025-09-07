@@ -1,5 +1,5 @@
 const Subscriber = require('../models/Subscriber');
-const notifySubscriptionChange = require('../jobs/notifySubs'); // <-- твоя функция уведомлений
+const notifySubscriptionChange = require('../components/subscriptionNotifier');
 
 const zodiacSigns = [
   'Овен', 'Телец', 'Близнецы', 'Рак',
@@ -11,38 +11,38 @@ module.exports = async (bot, message) => {
   const chatId = message.chat.id.toString();
   const firstName = message.from.first_name || 'Пользователь';
 
-  // Ищем пользователя в базе
-  let user = await Subscriber.findOne({ chatId });
+  try {
+    let user = await Subscriber.findOne({ chatId });
 
-  if (!user) {
-    // Создаём нового пользователя и сохраняем
-    user = new Subscriber({ chatId, firstName, subscribed: true, subscribedAt: new Date() });
-    await user.save();
+    if (!user) {
+      // Новый пользователь → создаём и подписываем
+      user = new Subscriber({ chatId, firstName, subscribed: true, subscribedAt: new Date() });
+      await user.save();
+      await notifySubscriptionChange(user);
+    } else if (!user.subscribed) {
+      // Был отписан → подписываем снова
+      user.subscribed = true;
+      user.subscribedAt = new Date();
+      await user.save();
+      await notifySubscriptionChange(user);
+    }
 
-    // 🔥 Уведомляем сразу о новой подписке
-    await notifySubscriptionChange(user);
-  } else if (!user.subscribed) {
-    // Пользователь был отписан, но нажал "подписаться"
-    user.subscribed = true;
-    user.subscribedAt = new Date();
-    await user.save();
+    // Отправляем пользователю клавиатуру выбора знака зодиака
+    const text = `Привет, ${firstName}! Выбери свой знак зодиака:`;
 
-    // 🔥 Уведомляем о подписке
-    await notifySubscriptionChange(user);
+    const keyboard = [];
+    for (let i = 0; i < zodiacSigns.length; i += 3) {
+      keyboard.push(zodiacSigns.slice(i, i + 3).map(sign => ({
+        text: sign,
+        callback_data: `zodiac_${sign}`
+      })));
+    }
+
+    await bot.sendMessage(chatId, text, {
+      reply_markup: { inline_keyboard: keyboard }
+    });
+
+  } catch (err) {
+    console.error('Ошибка в обработчике стартового сообщения:', err);
   }
-
-  // Отправляем пользователю клавиатуру выбора знака зодиака
-  const text = `Привет, ${firstName}! Выбери свой знак зодиака:`;
-
-  const keyboard = [];
-  for (let i = 0; i < zodiacSigns.length; i += 3) {
-    keyboard.push(zodiacSigns.slice(i, i + 3).map(sign => ({
-      text: sign,
-      callback_data: `zodiac_${sign}`
-    })));
-  }
-
-  await bot.sendMessage(chatId, text, {
-    reply_markup: { inline_keyboard: keyboard }
-  });
 };
