@@ -1,7 +1,7 @@
 // services/subscriberService.js
 
 const Subscriber = require("../models/Subscriber");
-const notifySubscriptionChange = require('../components/subscriptionNotifier');
+const notifySubscriptionChange = require('../jobs/notifySubs');
 
 /**
  * Подписка пользователя
