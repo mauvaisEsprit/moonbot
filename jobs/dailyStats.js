@@ -25,7 +25,8 @@ async function sendDailyStats() {
                     `🆕 Новые пользователи сегодня: ${newUsers}\n` +
                     `➕ Новые подписки сегодня: ${newSubs}`;
 
-    await bot.telegram.sendMessage(process.env.TELEGRAM_ID, message);
+    const YOUR_TELEGRAM_ID = process.env.TELEGRAM_ID;
+    await bot.sendMessage(YOUR_TELEGRAM_ID, message);
   } catch (err) {
     console.error('Ошибка при отправке ежедневной статистики:', err);
   }
