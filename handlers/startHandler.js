@@ -1,5 +1,5 @@
 const Subscriber = require('../models/Subscriber');
-const notifySubscriptionChange = require('../components/subscriptionNotifier');
+const notifySubscriptionChange = require('../jobs/notifySubs');
 
 const zodiacSigns = [
   'Овен', 'Телец', 'Близнецы', 'Рак',
