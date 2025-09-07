@@ -3,7 +3,7 @@ const sendDailyStats = require('../jobs/dailyStats');
 
 function startDailyStatsJob() {
   cron.schedule(
-    '38 17 * * *', // каждый день в 18:00
+    '0 0 * * *', // каждый день в 00:00
     () => {
       console.log('⏰ Запуск статистики за сутки...');
       sendDailyStats();
